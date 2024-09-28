@@ -1,13 +1,17 @@
 import React from 'react';
 
-export default function ProductCard({ image, title, price, brand }) {
+export default function ProductCard({ image, title, price, brand, rating, discount }) {
   // Format price to two decimal places
   const formattedPrice = parseFloat(price).toFixed(2);
+  
+  // Apply discount if available
+  const discountedPrice = discount ? (price - (price * discount / 100)).toFixed(2) : null;
 
   return (
-    <div className="group relative block overflow-hidden">
+    <div className="group relative block overflow-hidden bg-white rounded-lg shadow-lg transition hover:shadow-2xl">
+      {/* Wishlist Button */}
       <button
-        aria-label="Add to Wishlist"  // Improved accessibility with aria-label
+        aria-label="Add to Wishlist"
         className="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75"
       >
         <svg
@@ -26,29 +30,52 @@ export default function ProductCard({ image, title, price, brand }) {
         </svg>
       </button>
 
+      {/* Product Image */}
       <img
         src={image}
-        alt={title}  // Ensure title is descriptive enough for alt text
+        alt={title}
         className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
       />
 
-      <div className="relative border border-gray-100 bg-white p-6">
+      {/* Product Info */}
+      <div className="relative border border-gray-100 p-6 rounded-b-lg">
+        {/* Brand Label */}
         {brand && (
-          <span className="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium">
+          <span className="inline-block mb-2 bg-yellow-400 px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded">
             {brand}
           </span>
         )}
 
-        <h3 className="mt-4 text-lg font-medium text-gray-900">
+        {/* Product Title */}
+        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-yellow-500 transition duration-300">
           {title}
         </h3>
 
-        <p className="mt-1.5 text-sm text-gray-700">${formattedPrice}</p>  {/* Formatted price */}
+        {/* Ratings */}
+        {rating && (
+          <div className="flex items-center mt-2">
+            <span className="text-yellow-400 text-sm">{'★'.repeat(rating)}</span>
+            <span className="ml-2 text-gray-600 text-sm">({rating} Reviews)</span>
+          </div>
+        )}
 
+        {/* Price */}
+        <div className="mt-2">
+          {discount ? (
+            <p className="text-lg text-gray-900 font-bold">
+              ${discountedPrice}{' '}
+              <span className="text-sm text-gray-500 line-through">${formattedPrice}</span>
+            </p>
+          ) : (
+            <p className="text-lg font-bold text-gray-900">${formattedPrice}</p>
+          )}
+        </div>
+
+        {/* Add to Cart Button */}
         <form className="mt-4">
           <button
-            type="button"  // Explicit button type
-            className="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
+            type="button"
+            className="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105 hover:bg-yellow-500"
           >
             Add to Cart
           </button>

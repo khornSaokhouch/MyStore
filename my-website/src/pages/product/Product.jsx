@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 export default function Product() {
   return (
     <div>
-        <h1>product pages</h1>
+      <h1>Product Pages</h1>
+      {/* Add product listing logic here */}
     </div>
   );
 }

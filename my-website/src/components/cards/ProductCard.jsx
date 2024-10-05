@@ -1,18 +1,15 @@
 import React from 'react';
 
 export default function ProductCard({ image, title, price, brand, rating, discount }) {
-  // Format price to two decimal places
-  const formattedPrice = parseFloat(price).toFixed(2);
-  
-  // Apply discount if available
-  const discountedPrice = discount ? (price - (price * discount / 100)).toFixed(2) : null;
+  const formattedPrice = parseFloat(price).toFixed(2);  // Ensure price is formatted
+  const discountedPrice = discount ? (price - (price * discount / 100)).toFixed(2) : null;  // Calculate discount
 
   return (
     <div className="group relative block overflow-hidden bg-white rounded-lg shadow-lg transition hover:shadow-2xl">
       {/* Wishlist Button */}
       <button
         aria-label="Add to Wishlist"
-        className="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75"
+        className="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -32,34 +29,30 @@ export default function ProductCard({ image, title, price, brand, rating, discou
 
       {/* Product Image */}
       <img
-        src={image}
+        src={image || '/fallback-image-url.jpg'}  // Add fallback image
         alt={title}
         className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
       />
 
       {/* Product Info */}
       <div className="relative border border-gray-100 p-6 rounded-b-lg">
-        {/* Brand Label */}
         {brand && (
           <span className="inline-block mb-2 bg-yellow-400 px-3 py-1.5 text-xs font-medium uppercase tracking-wider rounded">
             {brand}
           </span>
         )}
 
-        {/* Product Title */}
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-yellow-500 transition duration-300">
           {title}
         </h3>
 
-        {/* Ratings */}
-        {rating && (
+        {typeof rating === 'number' && rating >= 0 && rating <= 5 && (
           <div className="flex items-center mt-2">
-            <span className="text-yellow-400 text-sm">{'★'.repeat(rating)}</span>
+            <span className="text-yellow-400 text-sm">{'★'.repeat(Math.floor(rating))}</span>
             <span className="ml-2 text-gray-600 text-sm">({rating} Reviews)</span>
           </div>
         )}
 
-        {/* Price */}
         <div className="mt-2">
           {discount ? (
             <p className="text-lg text-gray-900 font-bold">
@@ -71,7 +64,6 @@ export default function ProductCard({ image, title, price, brand, rating, discou
           )}
         </div>
 
-        {/* Add to Cart Button */}
         <form className="mt-4">
           <button
             type="button"
